@@ -1,0 +1,32 @@
+---
+title: "Factors Affect Miss Distance of Near-Earth Objects"
+author: "Victor Chen"
+date: "2023-05-29"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library("swirl")
+library("UsingR")
+library("tidyverse")
+```
+
+## Dataset Import
+
+```{r Dataset Import}
+## Step 1: Importing the original dataset.
+ast <- read_csv("Dataset/Asteroid Dataset.csv")
+neo <- read_csv("Dataset/Near Earth Objects.csv")
+
+## Step 2: Merging two datasets together using id as the key.
+ast <- ast %>%
+  rename(ID = spkid)
+
+dat <- neo %>%
+  select(id, name, miss_distance, relative_velocity) %>%
+  rename(ID = id) %>%
+  left_join(ast, by = "ID") %>%
+  filter(!is.na(id))
+```
